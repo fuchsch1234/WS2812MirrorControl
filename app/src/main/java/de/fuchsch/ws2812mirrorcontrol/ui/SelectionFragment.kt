@@ -1,6 +1,8 @@
 package de.fuchsch.ws2812mirrorcontrol.ui
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import de.fuchsch.ws2812mirrorcontrol.R
+import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectionViewModel
+import kotlinx.android.synthetic.main.fragment_selection.*
 
 /**
  * A simple [Fragment] subclass.
@@ -17,8 +21,16 @@ import de.fuchsch.ws2812mirrorcontrol.R
  */
 class SelectionFragment : Fragment() {
 
+    private val hostListAdapter = HostListAdapter()
+    private lateinit var viewModel: SelectionViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
+        viewModel.hostList.observe(this, Observer { hostListAdapter.submitList(it) })
+
+        selectionRecyclerView.adapter = hostListAdapter
     }
 
     override fun onCreateView(
@@ -38,6 +50,6 @@ class SelectionFragment : Fragment() {
          * @return A new instance of fragment SelectionFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) = SelectionFragment()
+        fun newInstance() = SelectionFragment()
     }
 }
