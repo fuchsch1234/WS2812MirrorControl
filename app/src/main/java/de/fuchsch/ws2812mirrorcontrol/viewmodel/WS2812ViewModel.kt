@@ -16,7 +16,7 @@ class WS2812ViewModel: BaseViewModel() {
     var disposable: Disposable? = null
 
     val availableEffects: MutableLiveData<List<String>> = MutableLiveData()
-    val currentEffect: MutableLiveData<String> = MutableLiveData()
+    val currentEffectPosition: MutableLiveData<Int> = MutableLiveData()
 
     fun getAvailableEffects() {
         disposable = wS2812Api.getEffects()
@@ -25,7 +25,7 @@ class WS2812ViewModel: BaseViewModel() {
             .subscribe(
                 { result ->
                     availableEffects.postValue(result.Effects)
-                    currentEffect.postValue(result.CurrentEffect)
+                    currentEffectPosition.postValue(result.Effects.indexOf(result.CurrentEffect))
                 },
                 {}
             )
