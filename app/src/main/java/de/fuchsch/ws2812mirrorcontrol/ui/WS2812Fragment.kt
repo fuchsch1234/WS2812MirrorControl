@@ -28,15 +28,11 @@ class WS2812Fragment : Fragment() {
 
     private lateinit var viewModel: WS2812ViewModel
     private lateinit var binding: FragmentWs2812Binding
-    private val effectSpinnerAdapter by lazy {
-        ArrayAdapter<String>(this.context!!, android.R.layout.simple_spinner_dropdown_item)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
-        viewModel.availableEffects.observe(this, Observer { effects -> effectSpinnerAdapter.addAll(effects!!) })
+        viewModel.getAvailableEffects()
 
     }
 
@@ -44,8 +40,11 @@ class WS2812Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ws2812, container, false)
-        binding.spinnerAdapter = effectSpinnerAdapter
+        binding.viewModel = viewModel
+
         // Inflate the layout for this fragment
         return binding.root
     }
