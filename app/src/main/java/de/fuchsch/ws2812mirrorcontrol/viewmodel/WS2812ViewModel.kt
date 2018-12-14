@@ -1,11 +1,38 @@
 package de.fuchsch.ws2812mirrorcontrol.viewmodel
 
+import android.arch.lifecycle.MutableLiveData
 import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
 import de.fuchsch.ws2812mirrorcontrol.network.WS2812Api
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class WS2812ViewModel: BaseViewModel() {
 
     @Inject
     lateinit var wS2812Api: WS2812Api
+
+    var disposable: Disposable? = null
+
+    val availableEffects: MutableLiveData<List<String>> = MutableLiveData()
+    val currentEffect: MutableLiveData<String> = MutableLiveData()
+
+    fun getAvailableEffects() {
+        disposable = wS2812Api.getEffects()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    availableEffects.postValue(result.Effects)
+                    currentEffect.postValue(result.CurrentEffect)
+                },
+                {}
+            )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable?.dispose()
+    }
 }
