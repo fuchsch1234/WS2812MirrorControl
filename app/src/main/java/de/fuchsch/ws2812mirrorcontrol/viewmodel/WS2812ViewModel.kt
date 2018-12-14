@@ -1,5 +1,6 @@
 package de.fuchsch.ws2812mirrorcontrol.viewmodel
 
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
 import de.fuchsch.ws2812mirrorcontrol.network.WS2812Api
@@ -8,7 +9,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class WS2812ViewModel: BaseViewModel() {
+class WS2812ViewModel(application: Application): BaseViewModel(application) {
 
     @Inject
     lateinit var wS2812Api: WS2812Api

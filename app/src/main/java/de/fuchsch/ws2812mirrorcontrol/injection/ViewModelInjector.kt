@@ -1,5 +1,7 @@
 package de.fuchsch.ws2812mirrorcontrol.injection
 
+import android.content.Context
+import dagger.BindsInstance
 import dagger.Component
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectionViewModel
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.WS2812ViewModel
@@ -19,5 +21,8 @@ interface ViewModelInjector {
         fun build(): ViewModelInjector
 
         fun networkModule(networkModule: NetworkModule): Builder
+
+        @BindsInstance
+        fun context(context: Context): Builder
     }
 }
