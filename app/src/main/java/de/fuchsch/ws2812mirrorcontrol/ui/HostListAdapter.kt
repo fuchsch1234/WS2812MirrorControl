@@ -10,19 +10,23 @@ import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.model.Host
 import kotlinx.android.synthetic.main.host_view_holder.view.*
 
-class HostListAdapter(): ListAdapter<Host, HostListAdapter.ViewHolder>(HostListAdapter.HostDiffCallback()) {
+typealias ClickListener = (Host) -> Unit
+
+class HostListAdapter(val listener: ClickListener): ListAdapter<Host, HostListAdapter.ViewHolder>(HostListAdapter.HostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolder(inflater.inflate(R.layout.host_view_holder, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position), listener)
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bind(host: Host) {
+
+        fun bind(host: Host, listener: ClickListener) {
             itemView.ipTextView.text = host.ip
             itemView.hostTextView.text = host.host
+            itemView.setOnClickListener { listener(host) }
         }
     }
 

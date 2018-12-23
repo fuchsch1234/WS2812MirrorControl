@@ -11,8 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 
 import de.fuchsch.ws2812mirrorcontrol.R
+import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectedHostViewModel
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectionViewModel
 import kotlinx.android.synthetic.main.fragment_selection.*
+import java.lang.RuntimeException
 
 /**
  * A simple [Fragment] subclass.
@@ -22,12 +24,16 @@ import kotlinx.android.synthetic.main.fragment_selection.*
  */
 class SelectionFragment : Fragment() {
 
-    private val hostListAdapter = HostListAdapter()
+    private val hostListAdapter = HostListAdapter { host -> selectedHostViewModel.selectedHost.value = host }
     private lateinit var viewModel: SelectionViewModel
+    private lateinit var selectedHostViewModel: SelectedHostViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
+        selectedHostViewModel = activity?.run {
+            ViewModelProviders.of(this).get(SelectedHostViewModel::class.java)
+        } ?: throw RuntimeException("Could not get instance of selectedHostViewModel")
     }
 
     override fun onCreateView(
