@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
+import de.fuchsch.ws2812mirrorcontrol.network.BaseUrlHolder
 import de.fuchsch.ws2812mirrorcontrol.network.WS2812Api
 import de.mannodermaus.rxbonjour.RxBonjour
 import de.mannodermaus.rxbonjour.drivers.jmdns.JmDNSDriver
@@ -23,13 +24,18 @@ object NetworkModule {
     internal fun provideWS2812Api(retrofit: Retrofit): WS2812Api = retrofit.create(WS2812Api::class.java)
 
     @Provides
-    @Reusable
-    internal fun provideRetrofitInterface(): Retrofit {
+    internal fun provideRetrofitInterface(baseUrlHolder: BaseUrlHolder): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("test")
+            .baseUrl(baseUrlHolder.baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideBaseUrlHolder(): BaseUrlHolder {
+        return BaseUrlHolder()
     }
 
     @Provides
