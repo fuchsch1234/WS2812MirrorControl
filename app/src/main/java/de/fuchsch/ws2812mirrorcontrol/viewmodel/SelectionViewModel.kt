@@ -53,7 +53,9 @@ class SelectionViewModel(application: Application): BaseViewModel(application) {
         when (event) {
             is BonjourEvent.Added -> {
                 val list: MutableList<Host> = mutableHostList.value?.toMutableList() ?: mutableListOf()
-                list.add(Host(event.service.name, event.service.v4Host?.hostAddress ?: ""))
+                val host = Host(event.service.name, event.service.v4Host?.hostAddress ?: "")
+                list.remove(host)
+                list.add(host)
                 mutableHostList.value = list
             }
             is BonjourEvent.Removed -> {
