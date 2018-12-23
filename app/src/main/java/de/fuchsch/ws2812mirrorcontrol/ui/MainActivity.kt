@@ -4,12 +4,12 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
 import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.model.Host
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectedHostViewModel
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var selectedHostViewModel: SelectedHostViewModel
 
