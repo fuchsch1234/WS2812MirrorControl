@@ -32,6 +32,7 @@ class WS2812Fragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
         viewModel.getAvailableEffects()
 
     }
@@ -40,8 +41,6 @@ class WS2812Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ws2812, container, false)
         binding.viewModel = viewModel
 
