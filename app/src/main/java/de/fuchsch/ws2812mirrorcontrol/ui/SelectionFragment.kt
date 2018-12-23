@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,7 +14,6 @@ import android.view.ViewGroup
 
 import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectionViewModel
-import kotlinx.android.synthetic.main.fragment_selection.*
 
 /**
  * A simple [Fragment] subclass.
@@ -28,10 +28,9 @@ class SelectionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProviders.of(this).get(SelectionViewModel::class.java)
         viewModel.hostList.observe(this, Observer { hostListAdapter.submitList(it) })
-
+        viewModel.refresh()
     }
 
     override fun onCreateView(
@@ -43,6 +42,9 @@ class SelectionFragment : Fragment() {
         val selectionRecyclerView = view.findViewById<RecyclerView>(R.id.selectionRecyclerView)
         selectionRecyclerView.adapter = hostListAdapter
         selectionRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        val refreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        viewModel.refreshing.observe(this, Observer { refreshLayout.isRefreshing = it!! })
+        refreshLayout.setOnRefreshListener { viewModel.refresh() }
         return view
     }
 

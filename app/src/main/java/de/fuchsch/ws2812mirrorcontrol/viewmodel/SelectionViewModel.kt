@@ -7,9 +7,11 @@ import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
 import de.fuchsch.ws2812mirrorcontrol.model.Host
 import de.mannodermaus.rxbonjour.BonjourEvent
 import de.mannodermaus.rxbonjour.RxBonjour
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SelectionViewModel(application: Application): BaseViewModel(application) {
@@ -27,12 +29,13 @@ class SelectionViewModel(application: Application): BaseViewModel(application) {
     @Inject
     lateinit var rxBonjour: RxBonjour
 
-    init {
+    fun refresh() {
         startDiscovery()
     }
 
-    fun startDiscovery() {
+    private fun startDiscovery() {
         disposable?.dispose()
+        mutableRefreshing.value = true
         disposable = rxBonjour.newDiscovery("_blinky._tcp")
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -40,6 +43,10 @@ class SelectionViewModel(application: Application): BaseViewModel(application) {
                 { event -> onDiscoveryEvent(event) },
                 { error -> onDiscoveryError(error) }
             )
+        Observable.timer(5, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { mutableRefreshing.value = false }
     }
 
     private fun onDiscoveryEvent(event: BonjourEvent) {
@@ -58,7 +65,7 @@ class SelectionViewModel(application: Application): BaseViewModel(application) {
     }
 
     private fun onDiscoveryError(error: Throwable) {
-
+        mutableRefreshing.value = false
     }
 
     override fun onCleared() {
