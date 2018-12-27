@@ -11,7 +11,7 @@ import javax.inject.Inject
 class Repository {
 
     @Inject
-    lateinit var wS2812Api: WS2812Api
+    lateinit var ws2812Api: WS2812Api
 
     @Inject
     lateinit var baseUrlHolder: BaseUrlHolder
@@ -30,5 +30,13 @@ class Repository {
         injector.inject(this)
     }
 
-    fun getEffects(): Observable<EffectList> = wS2812Api.getEffects()
+    companion object {
+
+        private val injector: RepositoryInjector = DaggerRepositoryInjector
+            .builder()
+            .repositoryModule(RepositoryModule)
+            .build()
+
+    }
+
 }
