@@ -9,7 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.BehaviorSubject
 import java.util.logging.Logger
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class Repository {
     @Inject
     lateinit var baseUrlHolder: BaseUrlHolder
 
-    val effects: PublishSubject<EffectList> = PublishSubject.create()
+    val effects: BehaviorSubject<EffectList> = BehaviorSubject.create()
 
     private var disposable: Disposable? = null
 

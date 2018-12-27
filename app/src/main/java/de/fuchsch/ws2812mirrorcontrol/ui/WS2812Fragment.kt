@@ -33,7 +33,6 @@ class WS2812Fragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
-        viewModel.getAvailableEffects()
 
     }
 
