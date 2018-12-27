@@ -2,16 +2,15 @@ package de.fuchsch.ws2812mirrorcontrol.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 
 import de.fuchsch.ws2812mirrorcontrol.R
-import de.fuchsch.ws2812mirrorcontrol.databinding.FragmentWs2812Binding
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.WS2812ViewModel
 import kotlinx.android.synthetic.main.fragment_ws2812.*
 
@@ -27,27 +26,48 @@ import kotlinx.android.synthetic.main.fragment_ws2812.*
 class WS2812Fragment : Fragment() {
 
     private lateinit var viewModel: WS2812ViewModel
-    private lateinit var binding: FragmentWs2812Binding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
-
+    private val effectAdapter: ArrayAdapter<String> by lazy {
+        ArrayAdapter<String>(context, android.R.layout.simple_spinner_item)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ws2812, container, false)
-        binding.viewModel = viewModel
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
 
-        // Inflate the layout for this fragment
-        return binding.root
-    }
+            viewModel = ViewModelProviders.of(this).get(WS2812ViewModel::class.java)
+            effectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-    companion object {
+        }
+
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? = inflater.inflate(R.layout.fragment_ws2812, container, false)
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+
+            viewModel.availableEffects.observe(this, Observer{
+                effectAdapter.clear()
+                effectAdapter.addAll(it)
+            })
+            effectSpinner.adapter = effectAdapter
+            viewModel.currentEffectPosition.observe(this, Observer{
+                if (it != null) {
+                    effectSpinner.setSelection(it)
+                }
+            })
+            effectSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    viewModel.currentEffectPosition.value = position
+                }
+            }
+        }
+
+        companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

@@ -9,10 +9,6 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
 
-    dataBinding {
-        enabled = true
-    }
-
     defaultConfig {
         applicationId "de.fuchsch.ws2812mirrorcontrol"
         minSdkVersion 23
