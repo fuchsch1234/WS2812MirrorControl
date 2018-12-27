@@ -13,13 +13,11 @@ class SelectedHostViewModel(application: Application): BaseViewModel(application
     @Inject
     lateinit var repository: Repository
 
-    val selectedHost: LiveData<Host>
-            get() = mutableSelectedHost
-    private val mutableSelectedHost = MutableLiveData<Host>()
+    val selectedHost = MutableLiveData<Host>()
 
     fun changeSelectedHost(host: Host) {
         repository.changeHost(host)
-        mutableSelectedHost.value = host
+        selectedHost.value = host
     }
 
 }
