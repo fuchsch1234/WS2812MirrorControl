@@ -24,7 +24,7 @@ import java.lang.RuntimeException
  */
 class SelectionFragment : Fragment() {
 
-    private val hostListAdapter = HostListAdapter { host -> selectedHostViewModel.selectedHost.value = host }
+    private val hostListAdapter = HostListAdapter { host -> selectedHostViewModel.changeSelectedHost(host) }
     private lateinit var viewModel: SelectionViewModel
     private lateinit var selectedHostViewModel: SelectedHostViewModel
 
