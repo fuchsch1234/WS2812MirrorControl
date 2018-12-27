@@ -3,6 +3,7 @@ package de.fuchsch.ws2812mirrorcontrol.injection
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectedHostViewModel
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectionViewModel
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.WS2812ViewModel
 import javax.inject.Singleton
@@ -14,6 +15,8 @@ interface ViewModelInjector {
     fun inject(wS2812ViewModel: WS2812ViewModel)
 
     fun inject(selectionViewModel: SelectionViewModel)
+
+    fun inject(selectedHostViewModel: SelectedHostViewModel)
 
     @Component.Builder
     interface Builder {
