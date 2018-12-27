@@ -2,7 +2,6 @@ package de.fuchsch.ws2812mirrorcontrol.injection
 
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import de.fuchsch.ws2812mirrorcontrol.network.BaseUrlHolder
 import de.fuchsch.ws2812mirrorcontrol.network.WS2812Api
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +15,6 @@ import javax.inject.Singleton
 object RepositoryModule {
 
     @Provides
-    @Reusable
     internal fun provideWS2812Api(retrofit: Retrofit): WS2812Api = retrofit.create(WS2812Api::class.java)
 
     @Provides
