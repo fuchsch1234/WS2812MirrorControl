@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.model.Host
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.SelectedHostViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,10 +22,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayHost(host: Host) {
-        val intent = Intent(this, WS2812Activity::class.java).apply {
-            putExtra(HOST, host)
+        if (detailLayout != null) {
+            val fm = supportFragmentManager
+            val detailFragment = WS2812Fragment()
+            fm.beginTransaction()
+                .add(R.id.detailLayout, detailFragment)
+                .commit()
+        } else {
+            val intent = Intent(this, WS2812Activity::class.java).apply {
+                putExtra(HOST, host)
+            }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
     companion object {
