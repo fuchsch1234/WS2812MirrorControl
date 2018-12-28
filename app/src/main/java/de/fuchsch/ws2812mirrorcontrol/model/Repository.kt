@@ -10,6 +10,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.Observable
 import java.util.logging.Logger
 import javax.inject.Inject
 
@@ -41,6 +42,10 @@ class Repository {
         injector.inject(this)
         retrieveEffectList()
     }
+
+    fun restartHost(): Observable<Result> = ws2812Api.restart()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
     private fun retrieveEffectList() {
         disposable?.dispose()

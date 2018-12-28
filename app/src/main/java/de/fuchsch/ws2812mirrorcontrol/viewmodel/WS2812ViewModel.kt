@@ -37,6 +37,15 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
             )
     }
 
+    fun restart() {
+        disposable?.dispose()
+        disposable = repository.restartHost()
+            .subscribe(
+                { mutableSuccess.postValue("Successfully restarted device.") },
+                { mutableError.postValue(it) }
+            )
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable?.dispose()
