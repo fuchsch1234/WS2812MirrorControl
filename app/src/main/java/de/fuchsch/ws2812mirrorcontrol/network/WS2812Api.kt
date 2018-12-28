@@ -2,6 +2,7 @@ package de.fuchsch.ws2812mirrorcontrol.network
 
 import de.fuchsch.ws2812mirrorcontrol.model.Effect
 import de.fuchsch.ws2812mirrorcontrol.model.EffectList
+import de.fuchsch.ws2812mirrorcontrol.model.EffectOptions
 import de.fuchsch.ws2812mirrorcontrol.model.Result
 import io.reactivex.Observable
 import retrofit2.http.Body
@@ -18,5 +19,8 @@ interface WS2812Api {
 
     @POST("effect")
     fun setEffect(@Body effect: Effect): Observable<Result>
+
+    @POST("option")
+    fun setEffectOptions(@Body effectOptions: EffectOptions): Observable<Result>
 
 }
