@@ -49,7 +49,7 @@ class Repository {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { effects.onNext(it) },
-                { effects.onError(it) }
+                {}
             )
     }
 
