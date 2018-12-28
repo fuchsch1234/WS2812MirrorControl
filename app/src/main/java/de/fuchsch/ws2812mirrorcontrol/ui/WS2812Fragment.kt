@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 
 import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.WS2812ViewModel
@@ -65,6 +66,11 @@ class WS2812Fragment : Fragment() {
                     viewModel.currentEffectPosition.value = position
                 }
             }
+
+            restartButton.setOnClickListener{ viewModel.restart() }
+
+            viewModel.error.observe(this, Observer { Toast.makeText(context, it?.message, Toast.LENGTH_SHORT).show() })
+            viewModel.success.observe(this, Observer { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() })
         }
 
         companion object {

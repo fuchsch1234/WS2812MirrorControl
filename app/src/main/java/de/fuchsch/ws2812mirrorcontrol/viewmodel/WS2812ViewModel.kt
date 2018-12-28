@@ -1,6 +1,7 @@
 package de.fuchsch.ws2812mirrorcontrol.viewmodel
 
 import android.app.Application
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
 import de.fuchsch.ws2812mirrorcontrol.model.Repository
@@ -16,6 +17,14 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
 
     val availableEffects: MutableLiveData<List<String>> = MutableLiveData()
     val currentEffectPosition: MutableLiveData<Int> = MutableLiveData()
+
+    val success: LiveData<String>
+        get() = mutableSuccess
+    private val mutableSuccess = MutableLiveData<String>()
+
+    val error: LiveData<Throwable>
+        get() = mutableError
+    private val mutableError = MutableLiveData<Throwable>()
 
     init {
         disposable = repository.effects
