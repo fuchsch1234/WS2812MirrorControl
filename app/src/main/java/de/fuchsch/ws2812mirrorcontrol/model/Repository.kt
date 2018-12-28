@@ -47,6 +47,10 @@ class Repository {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
+    fun setEffect(effect: String): Observable<Result> = ws2812Api.setEffect(Effect(effect))
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+
     private fun retrieveEffectList() {
         disposable?.dispose()
         disposable = ws2812Api.getEffects()

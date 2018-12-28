@@ -17,6 +17,6 @@ interface WS2812Api {
     fun getEffects(): Observable<EffectList>
 
     @POST("effect")
-    fun setEffect(@Body effect: Effect): Observable<EffectList>
+    fun setEffect(@Body effect: Effect): Observable<Result>
 
 }

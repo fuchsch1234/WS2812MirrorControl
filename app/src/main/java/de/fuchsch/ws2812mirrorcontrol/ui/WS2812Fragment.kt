@@ -68,6 +68,7 @@ class WS2812Fragment : Fragment() {
             }
 
             restartButton.setOnClickListener{ viewModel.restart() }
+            sendButton.setOnClickListener{ viewModel.sendConfiguration() }
 
             viewModel.error.observe(this, Observer { Toast.makeText(context, it?.message, Toast.LENGTH_SHORT).show() })
             viewModel.success.observe(this, Observer { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() })
