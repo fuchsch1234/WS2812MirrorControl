@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import android.widget.Toast
 
 import de.fuchsch.ws2812mirrorcontrol.R
@@ -66,6 +67,19 @@ class WS2812Fragment : Fragment() {
                     viewModel.currentEffectPosition.value = position
                 }
             }
+
+            velocitySeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekbar: SeekBar?, value: Int, p2: Boolean) {
+                    viewModel.velocity.value = value
+                }
+
+                override fun onStartTrackingTouch(seekbar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekbar: SeekBar?) {
+                }
+
+            })
 
             restartButton.setOnClickListener{ viewModel.restart() }
             sendButton.setOnClickListener{ viewModel.sendConfiguration() }

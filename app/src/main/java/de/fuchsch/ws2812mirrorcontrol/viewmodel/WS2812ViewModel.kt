@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
+import de.fuchsch.ws2812mirrorcontrol.model.Color
 import de.fuchsch.ws2812mirrorcontrol.model.Repository
 import io.reactivex.disposables.Disposable
 import java.lang.Exception
@@ -18,6 +19,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
 
     val availableEffects: MutableLiveData<List<String>> = MutableLiveData()
     val currentEffectPosition: MutableLiveData<Int> = MutableLiveData()
+    val velocity = MutableLiveData<Int>()
 
     val success: LiveData<String>
         get() = mutableSuccess
@@ -56,6 +58,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
             return
         }
         disposable = repository.setEffect(effects[currentEffectPosition])
+            .flatMap { repository.setEffectOptions(velocity.value ?: 100, Color(255, 0, 0)) }
             .subscribe(
                 { mutableSuccess.postValue("Configuration changed successfully.") },
                 { mutableError.postValue(it) }
