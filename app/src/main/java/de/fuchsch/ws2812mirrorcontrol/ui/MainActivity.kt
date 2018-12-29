@@ -23,11 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayHost(host: Host) {
         if (detailLayout != null) {
-            val fm = supportFragmentManager
-            val detailFragment = WS2812Fragment()
-            fm.beginTransaction()
-                .add(R.id.detailLayout, detailFragment)
-                .commit()
+            if (detailLayout.childCount == 0) {
+                val fm = supportFragmentManager
+                val detailFragment = WS2812Fragment()
+                fm.beginTransaction()
+                    .add(R.id.detailLayout, detailFragment)
+                    .commit()
+            }
         } else {
             val intent = Intent(this, WS2812Activity::class.java).apply {
                 putExtra(HOST, host)
