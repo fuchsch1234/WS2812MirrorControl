@@ -20,7 +20,7 @@ interface WS2812Api {
     @POST("effect")
     fun setEffect(@Body effect: Effect): Observable<Result>
 
-    @POST("option")
+    @POST("options")
     fun setEffectOptions(@Body effectOptions: EffectOptions): Observable<Result>
 
 }
