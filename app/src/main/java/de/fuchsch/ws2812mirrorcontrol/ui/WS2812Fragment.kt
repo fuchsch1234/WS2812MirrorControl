@@ -2,6 +2,7 @@ package de.fuchsch.ws2812mirrorcontrol.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import android.widget.Toast
 import de.fuchsch.ws2812mirrorcontrol.R
 import de.fuchsch.ws2812mirrorcontrol.viewmodel.WS2812ViewModel
 import kotlinx.android.synthetic.main.fragment_ws2812.*
+import top.defaults.colorpicker.ColorPickerPopup
 
 /**
  * A simple [Fragment] subclass.
@@ -79,6 +81,46 @@ class WS2812Fragment : Fragment() {
                 override fun onStopTrackingTouch(seekbar: SeekBar?) {
                 }
 
+            })
+
+            pickedColor.setOnClickListener{
+                val color = viewModel.color.value
+                val displayColor = if (color != null) {
+                    Color.rgb(color.Red, color.Green, color.Blue)
+                } else {
+                    Color.RED
+                }
+                ColorPickerPopup.Builder(context)
+                    .initialColor(displayColor)
+                    .enableBrightness(true)
+                    .okTitle("Choose")
+                    .cancelTitle("Cancel")
+                    .showIndicator(true)
+                    .showValue(false)
+                    .build()
+                    .show(it, object: ColorPickerPopup.ColorPickerObserver {
+                        override fun onColorPicked(color: Int) {
+                            val color = de.fuchsch.ws2812mirrorcontrol.model.Color(
+                                Color.red(color),
+                                Color.green(color),
+                                Color.blue(color)
+                            )
+                            viewModel.color.value = color
+                        }
+
+                        override fun onColor(color: Int, fromUser: Boolean) {
+                        }
+
+                    })
+            }
+
+            viewModel.color.observe(this, Observer {
+                pickedColor.setBackgroundColor(
+                    if (it != null) {
+                        Color.rgb(it.Red, it.Green, it.Blue)
+                    } else {
+                        Color.RED
+                })
             })
 
             restartButton.setOnClickListener{ viewModel.restart() }

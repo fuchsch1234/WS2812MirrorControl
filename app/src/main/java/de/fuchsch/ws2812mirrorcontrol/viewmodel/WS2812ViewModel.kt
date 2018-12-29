@@ -20,6 +20,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
     val availableEffects: MutableLiveData<List<String>> = MutableLiveData()
     val currentEffectPosition: MutableLiveData<Int> = MutableLiveData()
     val velocity = MutableLiveData<Int>()
+    val color = MutableLiveData<Color>()
 
     val success: LiveData<String>
         get() = mutableSuccess
@@ -58,7 +59,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
             return
         }
         disposable = repository.setEffect(effects[currentEffectPosition])
-            .flatMap { repository.setEffectOptions(velocity.value ?: 100, Color(255, 0, 0)) }
+            .flatMap { repository.setEffectOptions((velocity.value ?: 1) * 100, color.value ?: Color(255, 0, 0)) }
             .subscribe(
                 { mutableSuccess.postValue("Configuration changed successfully.") },
                 { mutableError.postValue(it) }
