@@ -3,6 +3,7 @@
 
     <string name="effect_text_field">Effect:</string>
     <string name="velocity_text_field">Velocity:</string>
+    <string name="color_text_field">Color:</string>
     <string name="send_button">Send</string>
     <string name="restart_button">Restart</string>
 </resources>
