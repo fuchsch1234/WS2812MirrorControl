@@ -58,4 +58,7 @@ dependencies {
     implementation "de.mannodermaus.rxjava2:rxbonjour:$rx_bonjour_version"
     implementation "de.mannodermaus.rxjava2:rxbonjour-platform-android:$rx_bonjour_version"
     implementation "de.mannodermaus.rxjava2:rxbonjour-driver-jmdns:$rx_bonjour_version"
+
+    // Color Picker
+    implementation "com.github.duanhong169:colorpicker:1.1.5"
 }
