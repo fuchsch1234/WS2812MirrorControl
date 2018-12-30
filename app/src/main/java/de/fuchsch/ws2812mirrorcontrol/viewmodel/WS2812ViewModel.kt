@@ -31,6 +31,8 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
     private val mutableError = MutableLiveData<Throwable>()
 
     init {
+        velocity.value = 10
+        color.value = Color.RED
         disposable = repository.effects
             .subscribe(
                 { result ->
@@ -59,7 +61,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
             return
         }
         disposable = repository.setEffect(effects[currentEffectPosition])
-            .flatMap { repository.setEffectOptions((velocity.value ?: 1) * 100, color.value ?: Color(255, 0, 0)) }
+            .flatMap { repository.setEffectOptions((velocity.value ?: 1) * 100, color.value ?: Color.RED) }
             .subscribe(
                 { mutableSuccess.postValue("Configuration changed successfully.") },
                 { mutableError.postValue(it) }

@@ -19,4 +19,11 @@ data class Color(
     @SerializedName("R") val Red: Int,
     @SerializedName("G") val Green: Int,
     @SerializedName("B") val Blue: Int
-)
+) {
+    companion object {
+
+        val RED = Color(255, 0, 0)
+        val GREEN = Color(0, 255, 0)
+        val BLUE = Color(0, 0, 255)
+    }
+}
