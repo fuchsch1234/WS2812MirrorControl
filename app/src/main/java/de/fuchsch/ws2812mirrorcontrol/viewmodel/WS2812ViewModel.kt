@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData
 import de.fuchsch.ws2812mirrorcontrol.base.BaseViewModel
 import de.fuchsch.ws2812mirrorcontrol.model.Color
 import de.fuchsch.ws2812mirrorcontrol.model.Repository
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.lang.Exception
 import javax.inject.Inject
@@ -30,6 +31,8 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
         get() = mutableError
     private val mutableError = MutableLiveData<Throwable>()
 
+    private var currentHostEffect: String? = null
+
     init {
         velocity.value = 10
         color.value = Color.RED
@@ -38,6 +41,7 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
                 { result ->
                     availableEffects.postValue(result.Effects)
                     currentEffectPosition.postValue(result.Effects.indexOf(result.CurrentEffect))
+                    currentHostEffect = result.CurrentEffect
                 },
                 {}
             )
@@ -60,7 +64,16 @@ class WS2812ViewModel(application: Application): BaseViewModel(application) {
             mutableError.value = Exception("No effect chosen.")
             return
         }
-        disposable = repository.setEffect(effects[currentEffectPosition])
+
+        // Update effect only if it has changed
+        val setEffect = if (currentHostEffect == effects[currentEffectPosition]) {
+            Observable.just(null)
+        } else {
+            repository.setEffect(effects[currentEffectPosition])
+        }
+
+        // Update effect if necessary and set new options
+        disposable = setEffect
             .flatMap { repository.setEffectOptions((velocity.value ?: 1) * 100, color.value ?: Color.RED) }
             .subscribe(
                 { mutableSuccess.postValue("Configuration changed successfully.") },
